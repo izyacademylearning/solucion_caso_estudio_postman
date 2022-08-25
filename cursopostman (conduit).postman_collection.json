@@ -1,0 +1,376 @@
+{
+	"info": {
+		"_postman_id": "ee03f738-2cd4-4bf4-af03-c6f34a45c50e",
+		"name": "curso postman (conduit)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20819081"
+	},
+	"item": [
+		{
+			"name": "Get",
+			"item": [
+				{
+					"name": "GET ALL TAGS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"variables de ambiente activas\"), function(){\r",
+									"    pm.expect(pm.environment.name).to.equal(\"Curso\")\r",
+									"};\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"//console.log(\"esto es el tags: \"+jsonData.tags.length)\r",
+									"\r",
+									"pm.test(\"el body sin string\"), function(){\r",
+									"    pm.expect(jsonData.tags).to.equal(\"moya\")\r",
+									"}\r",
+									"\r",
+									"pm.test(\"el tamaño de tags es de  \"+ jsonData.tags.length, function(){\r",
+									" pm.expect(jsonData.tags.length).to.equal(10)\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QwMDA0QHBvc3RtYW4uY29tLmNvIiwidXNlcm5hbWUiOiJ0ZXN0MDAwMS00IiwiaWF0IjoxNjUyODkzMDczLCJleHAiOjE2NTgwNzcwNzN9.6u8WUQ8gabd0LolPq8Ub9DokAnqdXXrpgU8HRdE1k3A",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL_BASE}}/tags",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL ARTICLE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/articles?limit=10&offset=0",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"articles"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "New account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user\": {\r\n    \"email\": \"test0002@postman.com.co\",\r\n    \"password\": \"1234\",\r\n    \"username\": \"test0001-3\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://conduit.productionready.io/api/users",
+							"protocol": "https",
+							"host": [
+								"conduit",
+								"productionready",
+								"io"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData= JSON.parse(responseBody)\r",
+									"var autoken= bodyData.user.token\r",
+									"pm.environment.set(\"Token\", autoken)\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"Se ejecuto un request de tipo POST\")"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QwMDAyQHBvc3RtYW4uY29tLmNvIiwidXNlcm5hbWUiOiJ0ZXN0MDAwMS0zIiwiaWF0IjoxNjUyMjk3NjY5LCJleHAiOjE2NTc0ODE2Njl9.1Nk2jigAHZPHhIdG6LA8c835dIqw90ihzp9GqobA8yU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user\": {\r\n    \"email\": \"test0002@postman.com.co\",\r\n    \"password\": \"1234\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/users/login",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new Articles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const TOKEN = pm.environment.get('Token');\r",
+									"const SLUG = pm.environment.get('Slug');\r",
+									"const CREATED = pm.environment.get('Created');\r",
+									"\r",
+									"if(CREATED === 'true'){\r",
+									"    pm.sendRequest({\r",
+									"\r",
+									"url: `https://api.realworld.io/api/articles/${SLUG}`,\r",
+									"\r",
+									"method: 'DELETE',\r",
+									"\r",
+									"header: {\r",
+									"\r",
+									"'Authorization': `Bearer ${TOKEN}`\r",
+									"\r",
+									"}\r",
+									"\r",
+									"})\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData= JSON.parse(responseBody)\r",
+									"var SlugId = bodyData.article.slug\r",
+									"pm.environment.set(\"Slug\", SlugId)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"article\": {\r\n    \"tagList\": [],\r\n    \"title\": \"postman9.0.2\",\r\n    \"description\": \"pruebas manuales2 \",\r\n    \"body\": \"jijii\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/articles/",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"articles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "DELETE ARTICLE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/articles/{{Slug}}",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"articles",
+								"{{Slug}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Put",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"article\": {\r\n    \"slug\": \"nuevo-curso-postman-44658\",\r\n    \"{{title}}\": \"nuevo curso postman \",\r\n    \"description\": \"pruebas manuales de servicios web \",\r\n    \"body\": \"jajajajajajajajaja blablablablabla\\n\\neditado por alex \",\r\n    \"tagList\": [\r\n      \"web \"\r\n    ],\r\n    \"createdAt\": \"2022-05-20T14:49:12.141Z\",\r\n    \"updatedAt\": \"2022-05-20T14:49:12.141Z\",\r\n    \"favorited\": false,\r\n    \"favoritesCount\": 0,\r\n    \"author\": {\r\n      \"username\": \"test0001-3\",\r\n      \"bio\": null,\r\n      \"image\": \"https://api.realworld.io/images/smiley-cyrus.jpeg\",\r\n      \"following\": false\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/articles/{{Slug}}",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"articles",
+								"{{Slug}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
